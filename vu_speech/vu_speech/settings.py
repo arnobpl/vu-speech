@@ -77,8 +77,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
         'NAME': 'vu_db',
-        'USER': 'root',
-        'PASSWORD': '',
+        'USER': 'vuroot',
+        'PASSWORD': 'vupass452',
         'HOST': 'localhost',   
         'PORT': '3306',
     }    
