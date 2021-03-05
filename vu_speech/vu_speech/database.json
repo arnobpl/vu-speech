@@ -1,0 +1,10 @@
+{
+    "default": {
+        "ENGINE": "django.db.backends.mysql", 
+        "NAME": "vu_db",
+        "USER": "vu_user",
+        "PASSWORD": "vupass452",
+        "HOST": "localhost",   
+        "PORT": "3306"
+    }    
+}

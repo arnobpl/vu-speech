@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -73,16 +74,9 @@ WSGI_APPLICATION = 'vu_speech.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'vu_db',
-        'USER': 'vuroot',
-        'PASSWORD': 'vupass452',
-        'HOST': 'localhost',   
-        'PORT': '3306',
-    }    
-}
+DATABASES = {}
+with open(Path(__file__).resolve().parent.joinpath('database.json')) as f:
+    DATABASES = json.load(f)
 
 
 # Password validation
