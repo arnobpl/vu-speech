@@ -12,4 +12,3 @@ sudo mysql -u $mysql_root_user -p$mysql_root_pass -Bse "DROP DATABASE $db_name;"
 
 # delete python virtual environment
 rm -r "./env"
-

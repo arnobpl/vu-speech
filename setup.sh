@@ -2,7 +2,7 @@
 source ./fetch_db.sh
 
 # handle default python version
-if [[ "$(python --version 2>&1)" = "Python 2"* ]]; then
+if [[ "$(python --version 2>&1)" == "Python 2"* ]]; then
   python() {
     python3 "${@}"
   }
@@ -31,4 +31,3 @@ sudo mysql -u $mysql_root_user -p$mysql_root_pass -Bse "CREATE USER '$db_user'@'
 
 # login mysql db_user and create db_name
 mysql -u $db_user -p$db_pass -Bse "CREATE DATABASE $db_name;"
-
