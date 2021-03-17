@@ -74,6 +74,8 @@ pytestdebug.log
 *.mo
 
 # Django stuff:
+migrations/*
+!migrations/__init__.py
 
 # Flask stuff:
 instance/
