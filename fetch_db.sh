@@ -12,4 +12,3 @@ fetch_db_info() {
   mysql_root_user=$(jq -r ".default.USER" $db_root_file)
   mysql_root_pass=$(jq -r ".default.PASSWORD" $db_root_file)
 }
-
