@@ -4,7 +4,7 @@ import io
 import pyaudio
 from six.moves import queue
 
-class transcribe(object):
+class MicrophoneStream(object):
     def __init__(self, rate, chunk):
         self.rate = rate
         self._chunk = chunk
@@ -65,34 +65,9 @@ streamclient = RevAiStreamingClient(access_token, config)
 with MicrophoneStream(rate, chunk) as stream:
     try:
         response_gen = streamclient.start(stream.generator())
-        for resp in response_generator:
+        for resp in response_gen:
             print(resp)
 
     except KeyboardInterrupt:
         streamclient.end()
         pass
-
-
-
-
-
-
-# #TODO: add path to raw file (audio file in binary format)
-# filename = "/audio_test/english_test.raw"
-#
-# #TODO: add access token from rev.ai
-# access_token = "02QlwoZ46LJpb0meCW3Q7FEgVmY8ogZeKZflvmGHc-9JcUDi53qrtYOscMUbVDm6_Pon1gH5vJIAaORsCY2XdVP3iM6ds"
-#
-# config = MediaConfig("audio/x-raw", "interleaved", 16000, "S16LE", 1)
-#
-# streamclient = RevAiStreamingClient(access_token, config)
-#
-# with io.open(filename, 'rb') as stream:
-#     media_generator = [stream.read()]
-#
-# response_generator = streamclient.start(media_generator)
-#
-# for resp in response_generator:
-#     print(resp)
-#
-# streamclient.end()
