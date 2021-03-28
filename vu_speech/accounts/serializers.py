@@ -3,13 +3,6 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
 
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = get_user_model()
-        fields = ['username', 'first_name', 'last_name', 'email', ]
-        read_only_fields = ['username', ]
-
-
 class SignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
@@ -29,6 +22,13 @@ class SignupSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ['username', 'first_name', 'last_name', 'email', ]
+        read_only_fields = ['username', ]
 
 
 class PasswordChangeSerializer(serializers.Serializer):
