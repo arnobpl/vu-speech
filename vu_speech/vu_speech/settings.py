@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import datetime
 import json
 from pathlib import Path
 
@@ -43,8 +43,21 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_expiring_authtoken',
+
     'dashboard',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_expiring_authtoken.authentication.ExpiringTokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -58,7 +71,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'vu_speech.urls'
 
+API_ROOT_URL = 'api/v1/'
+
 AUTH_USER_MODEL = 'accounts.User'
+
+EXPIRING_TOKEN_LIFESPAN = datetime.timedelta(hours=2)
 
 TEMPLATES = [
     {
@@ -79,7 +96,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'vu_speech.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

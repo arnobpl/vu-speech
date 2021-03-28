@@ -5,14 +5,17 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
+from rest_framework import mixins, viewsets, status
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 
-from . import forms
+from . import forms, serializers
 
 
 # Create your views here.
 
 
-class SignUpView(generic.CreateView):
+class SignupView(generic.CreateView):
     form_class = forms.UserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'form.html'
@@ -24,7 +27,14 @@ class SignUpView(generic.CreateView):
         return context
 
 
-class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
+class SignupViewSet(mixins.CreateModelMixin,
+                    viewsets.GenericViewSet):
+    permission_classes = [AllowAny]
+    serializer_class = serializers.SignupSerializer
+
+
+class ProfileView(LoginRequiredMixin,
+                  generic.UpdateView):
     form_class = forms.UserChangeForm
     template_name = 'form.html'
     input_value = 'update'
@@ -43,7 +53,19 @@ class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
         return render(request, self.template_name, {'form': form, 'input_value': self.input_value})
 
 
-class PasswordChangeView(LoginRequiredMixin, generic.UpdateView):
+class ProfileViewSet(mixins.RetrieveModelMixin,
+                     mixins.UpdateModelMixin,
+                     viewsets.GenericViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ProfileSerializer
+
+    def get_object(self):
+        user = self.request.user
+        return user
+
+
+class PasswordChangeView(LoginRequiredMixin,
+                         generic.UpdateView):
     form_class = PasswordChangeForm
     template_name = 'form.html'
     input_value = 'update password'
@@ -52,7 +74,7 @@ class PasswordChangeView(LoginRequiredMixin, generic.UpdateView):
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            update_session_auth_hash(request, user)  # Important!
+            update_user_after_password_change(request, user)
             messages.success(request, 'Your password was successfully updated!')
             return redirect('/')
         else:
@@ -61,3 +83,35 @@ class PasswordChangeView(LoginRequiredMixin, generic.UpdateView):
     def get(self, request, **kwargs):
         form = PasswordChangeForm(request.user)
         return render(request, self.template_name, {'form': form, 'input_value': self.input_value})
+
+
+class PasswordChangeViewSet(mixins.UpdateModelMixin,
+                            viewsets.GenericViewSet):
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        user = self.request.user
+        return user
+
+    def update(self, request, *args, **kwargs):
+        user = self.get_object()
+        serializer = serializers.PasswordChangeSerializer(data=request.data)
+
+        if serializer.is_valid():
+            old_password = serializer.data.get('old_password')
+            if not user.check_password(old_password):
+                return Response({'old_password': ['Wrong password.']},
+                                status=status.HTTP_400_BAD_REQUEST)
+
+            user.set_password(serializer.data.get('new_password'))
+            user.save()
+            update_user_after_password_change(request, user)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+def update_user_after_password_change(request, user):
+    update_session_auth_hash(request, user)
+    if hasattr(user, 'auth_token'):
+        user.auth_token.delete()
