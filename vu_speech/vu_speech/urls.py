@@ -17,13 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
-from . import settings
+from .settings import API_ROOT_URL
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('accounts/', include('accounts.urls')),
-    path(settings.API_ROOT_URL + 'accounts/', include('accounts.urls_api')),
+    path(API_ROOT_URL + 'accounts/', include('accounts.urls_api')),
+
+    path('transcription/', include('transcription.urls')),
 
     path('dashboard/', include('dashboard.urls')),
 

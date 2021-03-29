@@ -47,6 +47,10 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_expiring_authtoken',
 
+    'channels',
+
+    'transcription',
+
     'dashboard',
 ]
 
@@ -96,6 +100,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'vu_speech.wsgi.application'
+ASGI_APPLICATION = 'vu_speech.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
