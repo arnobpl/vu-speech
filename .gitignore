@@ -11,6 +11,11 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 media
+PyAudio-0.2.11-cp39-cp39-win_amd64.whl
+db_root_credential.json
+fetch_db.sh
+mysqlclient-1.4.6-cp39-cp39-win_amd64.whl
+vu_speech/audio_test/
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
@@ -74,6 +79,9 @@ pytestdebug.log
 *.mo
 
 # Django stuff:
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
 
 # Flask stuff:
 instance/
