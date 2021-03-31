@@ -1,14 +1,14 @@
+import ast
 import json
 
 from rev_ai.models import MediaConfig
 
 
-# TODO: get the file type: raw/mp3/mp4/flav
-def get_media_config(filename):
-    text = filename.split('/')
-    text = text[len(text) - 1]
-    text = text.split('.')
-    text = text[len(text) - 1]
+def get_media_config(text):
+    # text = filename.split('/')
+    # text = text[len(text) - 1]
+    # text = text.split('.')
+    # text = text[len(text) - 1]
 
     config = None
     if text == 'raw':
@@ -23,19 +23,18 @@ def get_media_config(filename):
     return config
 
 
-def get_final_transcription(text):
-    json_obj = None
-    # json_obj = json.loads(text)
-    for t in text:
-        json_obj = json.loads(t)
-        # print()
-        if json_obj['type'] == 'final':
-            final_obj = json_obj
-
+def get_transcription_text(json_obj):
     elements = json_obj['elements']
     text = ''
     for ele in elements:
         text += ele['value']
-        # print(ele['value'])
-    # print(text)
+        text += ' '
     return text
+
+
+def parse_data(text_data):
+    y = json.loads(text_data)
+    x = ast.literal_eval(y)
+    print(x["type"])
+    print(x["stream"])
+    return x
