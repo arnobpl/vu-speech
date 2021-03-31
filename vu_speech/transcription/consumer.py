@@ -50,8 +50,10 @@ class VuConsumer(AsyncWebsocketConsumer):
                 elements = json_obj['elements']
                 for ele in elements:
                     partial_text = ele['value']
-                    task1 = asyncio.create_task(
-                        self.send(partial_text))
+                    loop = asyncio.get_event_loop()
+                    task1 = loop.create_task(self.send(partial_text))
+                    # task1 = asyncio.create_task(
+                    #     self.send(partial_text))
                     await task1
         print('Closing connection')
         streamclient.end()
