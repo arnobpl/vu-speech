@@ -8,11 +8,11 @@ from .utilities import *
 
 
 class VuConsumer(AsyncWebsocketConsumer):
-    groupname = ''
+    groupname = None
 
     async def connect(self):
         print(self.scope)
-        self.groupname = 'dashboard'
+        self.groupname = 'transcription'
         await self.channel_layer.group_add(
             self.groupname,
             self.channel_name
@@ -31,14 +31,13 @@ class VuConsumer(AsyncWebsocketConsumer):
             self.groupname,
             self.channel_name
         )
-        pass
 
     async def receive(self, text_data=None, bytes_data=None):
         # print('>>>>>>>', text_data)
         # print('>>>>>', bytes_data)
         x = parse_data(text_data)
-        bytes_array = [x["stream"]]
-        config = get_media_config(x["type"])
+        bytes_array = [x['stream']]
+        config = get_media_config(x['type'])
         streamclient = RevAiStreamingClient(ACCESS_KEY, config)
         response_generator = streamclient.start(bytes_array)
         print('Generating response...')
@@ -62,6 +61,6 @@ class VuConsumer(AsyncWebsocketConsumer):
         return 'END'
 
     async def deprocessing(self, event):
-        print("Even called!")
+        print('Even called!')
         val_other = event['value']
         await self.send(text_data=json.dumps({'type': 'text', 'value': val_other}))

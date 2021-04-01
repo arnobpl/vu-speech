@@ -9,7 +9,7 @@ if [[ "$(python --version 2>&1)" == "Python 2"* ]]; then
 fi
 
 # install prerequisites
-sudo apt-get install -y jq python3-venv python3-dev mysql-server libmysqlclient-dev  portaudio19-dev python3-pyaudio
+sudo apt-get install -y jq python3-venv python3-dev mysql-server libmysqlclient-dev
 
 # create python virtual environment
 python -m venv env
