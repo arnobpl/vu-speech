@@ -160,3 +160,29 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'vu_speech/static',
 ]
+
+# Logging
+# https://docs.djangoproject.com/en/3.1/topics/logging/
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'timestamp': {
+            'format': '{levelname} {asctime} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'timestamp'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+        },
+    }
+}

@@ -19,6 +19,8 @@ from django.views.generic import TemplateView
 
 from .settings import API_ROOT_URL
 
+admin.site.site_header = 'Vu Speech administration'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
