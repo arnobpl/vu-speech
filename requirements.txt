@@ -10,6 +10,7 @@ constantly==15.1.0
 cryptography==3.4.7
 daphne==3.0.1
 Django==3.1.7
+django-admin-numeric-filter==0.1.6
 djangorestframework==3.12.2
 djangorestframework-expiring-authtoken==0.1.4
 hyperlink==21.0.0

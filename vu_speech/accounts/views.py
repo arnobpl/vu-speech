@@ -1,18 +1,33 @@
 from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import get_user_model, update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views import generic
-from rest_framework import mixins, viewsets, status
+from rest_framework import mixins, status, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework_expiring_authtoken.views import ObtainExpiringAuthToken
 
 from . import forms, serializers
 
 
 # Create your views here.
+
+
+class ObtainExpiringAuthTokenWithLastLoginUpdate(ObtainExpiringAuthToken):
+    def post(self, request):
+        response = super().post(request)
+
+        # update last_login for a valid user
+        if response.status_code == status.HTTP_200_OK:
+            user = get_user_model().objects.get(username=request.data['username'])
+            user.last_login = timezone.now()
+            user.save()
+
+        return response
 
 
 class SignupView(generic.CreateView):

@@ -29,7 +29,5 @@ urlpatterns = [
 
     path('transcription/', include('transcription.urls')),
 
-    path('dashboard/', include('dashboard.urls')),
-
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
 ]

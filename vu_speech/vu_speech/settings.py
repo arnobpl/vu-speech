@@ -34,7 +34,13 @@ INTERNAL_IPS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_expiring_authtoken',
+
     'accounts',
+
+    'custom_admin',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -43,15 +49,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rest_framework',
-    'rest_framework.authtoken',
-    'rest_framework_expiring_authtoken',
-
     'channels',
 
     'transcription',
 
-    'dashboard',
+    'admin_numeric_filter',
 ]
 
 REST_FRAMEWORK = {
