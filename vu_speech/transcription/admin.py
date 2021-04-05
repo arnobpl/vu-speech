@@ -38,3 +38,5 @@ class SpeechStabilityAdmin(NumericFilterModelAdmin, NoWriteAdmin):
     list_filter = (('average_stability', SliderNumericFilter), ('count', SliderNumericFilter),)
 
     ordering = ('average_stability', '-count',)
+
+    search_fields = ('phrase',)
