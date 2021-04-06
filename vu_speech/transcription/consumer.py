@@ -35,10 +35,12 @@ class VuConsumer(AsyncWebsocketConsumer):
         pass
 
     async def receive(self, text_data=None, bytes_data=None):
-        # print('>>>>>>>', text_data)
-        # print('>>>>>', bytes_data)
+        print('>>>>>>>', text_data)
+        print('>>>>>', bytes_data)
         x = parse_data(text_data)
-        bytes_array = [x["stream"]]
+        b = bytes(x["stream"], 'utf-8')
+        bytes_array = [b]
+        print(bytes_array)
         config = get_media_config(x["type"])
         streamclient = RevAiStreamingClient(ACCESS_KEY, config)
         response_generator = streamclient.start(bytes_array)
