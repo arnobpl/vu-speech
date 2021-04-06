@@ -33,7 +33,7 @@ class BaseChartDataAdmin(admin.ModelAdmin):
         extra_context['chart_table'] = self.chart_table
 
         if not self.chart_table:
-            extra_context['title'] = None
+            extra_context['title'] = 'Select chart to view details'
 
         return super().changelist_view(request, extra_context=extra_context)
 
