@@ -2,11 +2,25 @@ package com.example.vuspeech;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class VURegister extends AppCompatActivity {
 
@@ -20,9 +34,12 @@ public class VURegister extends AppCompatActivity {
 
     private String Username = "Admin";
     private String Password = "12345678";
+    String resp = "";
 
     boolean isValid = false;
     private int counter = 5;
+
+    String url_auth = "http://stark.cse.buffalo.edu:8000/api/v1/accounts/signup/";
 
 
     @Override
@@ -36,7 +53,9 @@ public class VURegister extends AppCompatActivity {
         eLastname = findViewById(R.id.etlastName);
         ePassword1 = findViewById(R.id.etPassword1);
         ePassword2 = findViewById(R.id.etPassword2);
-        eRegister = findViewById(R.id.btnRegister);
+        eRegister = findViewById(R.id.btnRegisterNew);
+
+        VolleyLog.DEBUG = true;
 
         eRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,39 +76,83 @@ public class VURegister extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 } else {
 
-                    isValid = validate(inputPassword1, inputPassword2);
-
-                    if(!isValid){
-
-
-                        Toast.makeText(VURegister.this, "Enter same password", Toast.LENGTH_SHORT).show();
-
-
-                    }else{
-                        Toast.makeText(VURegister.this, "Registered Successful !", Toast.LENGTH_SHORT).show();
+                    validate(userName, inputPassword1, userEmail, firstName, lastName);
 
 
 
-                        //Add connection to Next Page
+
+                     //Add connection to Next Page
 
                     }
                 }
 
 
-            }
-        });
-
-
-    }
-
-    private boolean validate(String password1, String password2)
-    {
-        if(password1.equals(password2)){
-
-            return true;
+            });
         }
 
-        return false;
+
+
+
+    private String validate(String name, String pass, String email, String first, String last)
+    {
+
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        StringRequest sr = new StringRequest(Request.Method.POST,url_auth, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("JSONPost", response.toString());
+                resp = response.toString();
+                update();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d("JSONPost", "Error: " + error);
+                Toast.makeText(VURegister.this, "Registration failed", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("username",name.toString());
+                params.put("password",pass.toString());
+                params.put("first_name",first.toString());
+                params.put("last_name",last.toString());
+                params.put("email", email.toString());
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+               // params.put("Authorization", "Token ");
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
+
+
+
+        };
+        queue.add(sr);
+
+       /* if(password1.equals(password2)){
+
+            return true;
+        }*/
+
+        return resp;
+    }
+
+
+    private void update()
+    {
+        Toast.makeText(VURegister.this, "Registration successful", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(VURegister.this, MainActivity.class);
+        //intent.putExtra("token", auth );
+        startActivity(intent);
     }
 
 

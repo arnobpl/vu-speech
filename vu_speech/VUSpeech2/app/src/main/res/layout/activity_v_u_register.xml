@@ -91,7 +91,7 @@
         app:layout_constraintVertical_bias="0.322" />
 
     <Button
-        android:id="@+id/etRegisterNew"
+        android:id="@+id/btnRegisterNew"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Register"
