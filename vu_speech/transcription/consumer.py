@@ -68,6 +68,8 @@ class VuConsumer(AsyncWebsocketConsumer):
         stream_client.end()
         await self.close()
 
+        return 'END'
+
     async def notify(self, event):
         # print('Notify event called!')
         value = event['value']
