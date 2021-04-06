@@ -16,7 +16,7 @@ class VuConsumer(AsyncWebsocketConsumer):
     group_name = 'transcription'
 
     async def connect(self):
-        print(self.scope)
+        # print(self.scope)
         await self.channel_layer.group_add(
             self.group_name,
             self.channel_name
@@ -37,9 +37,13 @@ class VuConsumer(AsyncWebsocketConsumer):
         )
 
     async def receive(self, text_data=None, bytes_data=None):
-        x = parse_data(text_data)
-        bytes_array = [x['stream']]
-        config = get_media_config(x['type'])
+        if text_data is not None:
+            x = parse_data(text_data)
+            bytes_array = [x['stream']]
+            config = get_media_config(x['type'])
+        else:
+            bytes_array = bytes_data
+            config = get_media_config('raw')
 
         stream_client = RevAiStreamingClient(ACCESS_KEY, config)
         response_generator = stream_client.start(bytes_array)
@@ -60,13 +64,10 @@ class VuConsumer(AsyncWebsocketConsumer):
 
         print('Closing connection')
         stream_client.end()
-        # self.disconnect(200)
         await self.close()
 
-        return 'END'
-
     async def notify(self, event):
-        print('Notify event called!')
+        # print('Notify event called!')
         value = event['value']
         await self.send(text_data=json.dumps({'type': 'text', 'value': value}))
 

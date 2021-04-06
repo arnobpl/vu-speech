@@ -5,14 +5,8 @@ from rev_ai.models import MediaConfig
 
 
 def get_media_config(text):
-    # text = filename.split('/')
-    # text = text[len(text) - 1]
-    # text = text.split('.')
-    # text = text[len(text) - 1]
-
     config = None
     if text == 'raw':
-        print("*********its raw y'all")
         config = MediaConfig('audio/x-raw', 'interleaved', 16000, 'S16LE', 1)
     elif text == 'mp3' or text == 'mp4':
         config = MediaConfig('audio/x-mpeg')
