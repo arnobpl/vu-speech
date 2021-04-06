@@ -1,4 +1,3 @@
-import ast
 import json
 
 from rev_ai.models import MediaConfig
@@ -28,7 +27,8 @@ def get_transcription_text(json_obj):
 
 def parse_data(text_data):
     y = json.loads(text_data)
-    x = ast.literal_eval(y)
-    # print(x['type'])
-    # print(x['stream'])
-    return x
+    print(y['type'])
+    print(y['stream'])
+    print(type(y['stream']))
+    # x = ast.literal_eval(y)
+    return y
