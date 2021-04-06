@@ -37,11 +37,15 @@ class VuConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data=None, bytes_data=None):
         print('>>>>>>>', text_data)
         print('>>>>>', bytes_data)
-        x = parse_data(text_data)
-        b = bytes(x["stream"], 'utf-8')
-        bytes_array = [b]
-        print(bytes_array)
-        config = get_media_config(x["type"])
+        # x = parse_data(text_data)
+        y = json.loads(text_data)
+        bytes_array = []
+        # bytes_array = bytes(y["stream"], 'utf-8')
+        # bytes_array = bytearray(y["stream"], 'utf-8')
+        for b in y["stream"]:
+            bytes_array.append(bytes(y["stream"], 'utf-8'))
+        # print(bytes_array)
+        config = get_media_config(y["type"])
         streamclient = RevAiStreamingClient(ACCESS_KEY, config)
         response_generator = streamclient.start(bytes_array)
         print('Generating response...')
