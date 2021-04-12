@@ -12,7 +12,8 @@ from . import models
 
 @admin.register(models.SpeechUsage)
 class SpeechUsageAdmin(BaseChartDataAdmin, NoWriteAdmin):
-    chart_label = 'total speech usage'  # TODO: replace 'usage' to 'duration' after getting seconds
+    # TODO: replace 'usage (sentences)' to 'duration' after getting seconds
+    chart_label = 'total speech usage (sentences)'
     chart_fetch_url = '/admin/transcription/speech_usage/chart_data/'
     chart_table = False
 
