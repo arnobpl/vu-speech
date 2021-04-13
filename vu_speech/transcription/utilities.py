@@ -27,8 +27,8 @@ def get_transcription_text(json_obj):
 
 def parse_data(text_data):
     y = json.loads(text_data)
-    print(y['type'])
-    print(y['stream'])
-    print(type(y['stream']))
+    # print(y['type'])
+    # print(y['stream'])
+    # print(type(y['stream']))
     # x = ast.literal_eval(y)
     return y

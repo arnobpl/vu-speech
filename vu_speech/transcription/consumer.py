@@ -37,18 +37,10 @@ class VuConsumer(AsyncWebsocketConsumer):
         )
 
     async def receive(self, text_data=None, bytes_data=None):
-        # x = parse_data(text_data)
-        y = json.loads(text_data)
-        bytes_array = []
-        # bytes_array = bytes(y['stream'], 'utf-8')
-        # bytes_array = bytearray(y['stream'], 'utf-8')
-        for _ in y['stream']:
-            bytes_array.append(bytes(y['stream'], 'utf-8'))
-        # print(bytes_array)
+        config = get_media_config('raw')
 
-        config = get_media_config(y['type'])
         stream_client = RevAiStreamingClient(ACCESS_KEY, config)
-        response_generator = stream_client.start(bytes_array)
+        response_generator = stream_client.start([bytes_data])
 
         loop = asyncio.get_event_loop()
 
@@ -61,8 +53,7 @@ class VuConsumer(AsyncWebsocketConsumer):
                 elements = json_obj['elements']
                 for ele in elements:
                     partial_text = ele['value']
-                    send_task = loop.create_task(self.send(partial_text))
-                    await send_task
+                    await self.send(partial_text)
 
         print('Closing connection')
         stream_client.end()
