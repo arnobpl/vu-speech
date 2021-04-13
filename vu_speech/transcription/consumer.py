@@ -1,5 +1,6 @@
 import asyncio
 import datetime
+import time
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.exceptions import ValidationError
@@ -28,6 +29,10 @@ class VuConsumer(AsyncWebsocketConsumer):
                 'value': 'connected'
             }
         )
+
+        self.scope['stream_client'] = None
+        self.scope['response_generator'] = None
+
         await self.accept()
 
     async def disconnect(self, code):
@@ -37,18 +42,59 @@ class VuConsumer(AsyncWebsocketConsumer):
         )
 
     async def receive(self, text_data=None, bytes_data=None):
-        config = get_media_config('raw')
+        if bytes_data is None:
+            print('text_data: ' + text_data[:20])
+            print(len(text_data))
+        else:
+            print('bytes_data: ' + str(bytes_data)[:20])
+            print(len(bytes_data))
 
-        stream_client = RevAiStreamingClient(ACCESS_KEY, config)
-        response_generator = stream_client.start([bytes_data])
+        if self.scope['stream_client'] is None:
+            config = get_media_config('raw')
+            self.scope['stream_client'] = RevAiStreamingClient(ACCESS_KEY, config)
+            self.scope['stream_queue'] = [bytes_data]
+        else:
+            self.scope['stream_queue'].append(bytes_data)
 
+        if self.scope['response_generator'] is None:
+            self.scope['response_generator'] = self.scope['stream_client'].start(self.stream_generator())
+            asyncio.get_event_loop().create_task(self.generate_response())
+        else:
+            print('response_generator not NONE')
+
+        return 'END'
+
+    def stream_generator(self):
+        qu = self.scope['stream_queue']
+
+        while True:
+            print('generator loop')
+
+            retry = 3
+            while len(qu) == 0:
+                retry -= 1
+                if retry == 0:
+                    print('generator terminated')
+                    return
+                print('generator retry')
+                time.sleep(1)
+
+            print('generator yield')
+            val = qu.pop(0)
+            if val is None:
+                print('val is none')
+            else:
+                print(str(val)[:20])
+            yield val
+
+    async def generate_response(self):
         loop = asyncio.get_event_loop()
-
-        print('Generating response...')
+        response_generator = self.scope['response_generator']
         for resp in response_generator:
+            print('Generating response...')
+            print(resp)
             json_obj = json.loads(resp)
             if json_obj['type'] == 'final':
-                # print(resp)
                 loop.create_task(diagnostics_data_push(json_obj))
                 elements = json_obj['elements']
                 for ele in elements:
@@ -57,10 +103,10 @@ class VuConsumer(AsyncWebsocketConsumer):
                     await send_task
 
         print('Closing connection')
-        stream_client.end()
+        self.scope['stream_client'].end()
+        self.scope['stream_client'] = None
+        self.scope['response_generator'] = None
         await self.close()
-
-        return 'END'
 
     async def notify(self, event):
         # print('Notify event called!')
