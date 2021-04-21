@@ -11,7 +11,7 @@ from rev_ai.streamingclient import RevAiStreamingClient
 from . import models
 from .config import *
 from .utilities import *
-
+import wave
 
 class VuConsumer(AsyncWebsocketConsumer):
     group_name = 'transcription'
@@ -57,6 +57,17 @@ class VuConsumer(AsyncWebsocketConsumer):
             self.scope['stream_queue'].append(bytes_data)
 
         if self.scope['response_generator'] is None:
+            ## Save bytes data to a wav file.
+            ## For testing purpose only
+            # sampleRate = 44100.0  # hertz
+            # duration = 1.0  # seconds
+            # frequency = 440.0  # hertz
+            # obj = wave.open('sound.wav', 'w')
+            # obj.setnchannels(1)  # mono
+            # obj.setsampwidth(2)
+            # obj.setframerate(sampleRate)
+            # obj.writeframesraw(bytes_data)
+            # obj.close()
             self.scope['response_generator'] = self.scope['stream_client'].start(self.stream_generator())
             asyncio.get_event_loop().create_task(self.generate_response())
         else:
