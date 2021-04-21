@@ -12,4 +12,3 @@ def get_media_config(text):
     elif text == 'wav':
         config = MediaConfig('audio/x-wav')
     return config
-
