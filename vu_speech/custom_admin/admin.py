@@ -14,7 +14,6 @@ class BaseChartDataAdmin(admin.ModelAdmin):
 
     chart_label = None
     chart_background_color = 'rgba(220,20,20,0.5)'
-    chart_fetch_url = None
     chart_table = True
 
     # Inject chart data on page load in the ChangeList view
@@ -29,8 +28,8 @@ class BaseChartDataAdmin(admin.ModelAdmin):
         extra_context['chart_data'] = as_json
         extra_context['chart_label'] = self.chart_label
         extra_context['chart_background_color'] = self.chart_background_color
-        extra_context['chart_fetch_url'] = self.chart_fetch_url
         extra_context['chart_table'] = self.chart_table
+        extra_context['chart_fetch_url'] = request.path + 'chart_data/'
 
         if not self.chart_table:
             extra_context['title'] = 'Select chart to view details'

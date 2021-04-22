@@ -22,8 +22,6 @@ class UserAdmin(DjangoUserAdmin, BaseChartDataAdmin):
 
     date_hierarchy = 'date_joined'
 
-    chart_fetch_url = '/admin/accounts/user/chart_data/'
-
     def chart_data(self, request):
         return (super().chart_data(request)
                 .annotate(date=TruncDay('date_joined'))
