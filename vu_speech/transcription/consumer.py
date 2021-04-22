@@ -1,5 +1,6 @@
 import asyncio
 import datetime
+import json
 import time
 
 from channels.generic.websocket import AsyncWebsocketConsumer
@@ -45,6 +46,11 @@ class VuConsumer(AsyncWebsocketConsumer):
         if bytes_data is None:
             print('text_data: ' + text_data[:20])
             print(len(text_data))
+
+            if text_data == 'EOS':
+                print('Closing client connection')
+                await self.close()
+                return
         else:
             print('bytes_data: ' + str(bytes_data)[:20])
             print(len(bytes_data))
@@ -73,8 +79,6 @@ class VuConsumer(AsyncWebsocketConsumer):
             asyncio.get_event_loop().create_task(self.generate_response())
         else:
             print('response_generator not NONE')
-
-        return 'END'
 
     def stream_generator(self):
         qu = self.scope['stream_queue']
@@ -114,11 +118,10 @@ class VuConsumer(AsyncWebsocketConsumer):
                     send_task = loop.create_task(self.send(partial_text))
                     await send_task
 
-        print('Closing connection')
+        print('Closing transcription connection')
         self.scope['stream_client'].end()
         self.scope['stream_client'] = None
         self.scope['response_generator'] = None
-        await self.close()
 
     async def notify(self, event):
         # print('Notify event called!')
