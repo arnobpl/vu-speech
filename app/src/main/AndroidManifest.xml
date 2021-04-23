@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Speech"
         android:usesCleartextTraffic="true">
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".TranscriptionActivity"></activity>
+        <activity android:name=".LoginActivity" />
         <activity android:name=".UpdatePassword" />
         <activity android:name=".ProfileUpdate" />
         <activity android:name=".UserProfile" />
@@ -31,6 +32,9 @@
         <activity android:name=".MainActivity" />
 
         <service android:name=".SpeechService" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

@@ -67,8 +67,9 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="225dp"
+        android:layout_width="240dp"
         android:layout_height="45dp"
+        android:fontFamily="@font/open_sans_bold"
         android:text="Hello there,"
         android:textColor="#FAF1F1"
         android:textSize="40dp"
@@ -83,6 +84,7 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/open_sans"
         android:text="Username:"
         android:textColor="#FDFDFD"
         android:textSize="18sp"
@@ -97,6 +99,7 @@
         android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/open_sans"
         android:text="Password:"
         android:textColor="#F6F0F0"
         android:textSize="18sp"
@@ -106,4 +109,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etUsername"
         app:layout_constraintVertical_bias="0.769" />
+
 </android.support.constraint.ConstraintLayout>
