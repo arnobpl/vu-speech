@@ -1,6 +1,7 @@
 package com.google.cloud.android.speech;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,13 +32,13 @@ public class UserProfile extends AppCompatActivity {
     private TextView eLastname;
     private TextView eUsername;
     private TextView eEmail;
-    private Button updatebtn;
-    private Button updatepass;
-    private Button recordbtn;
+    private FloatingActionButton updatebtn;
+    private FloatingActionButton updatepass;
+    private FloatingActionButton recordbtn;
     private TextView details;
     private TextView etdisplay;
     private String resp = "";
-    private Button logout;
+    private FloatingActionButton logout;
     private TextView eFullname;
     String token = "";
     String username = "";
@@ -58,12 +59,12 @@ public class UserProfile extends AppCompatActivity {
         eFirstname = findViewById(R.id.etFirstname);
         eLastname = findViewById(R.id.etLastname);
         eEmail = findViewById(R.id.etemail);
-        eUsername = findViewById(R.id.etDisplayname);
-        updatebtn = findViewById(R.id.btnUpdate);
-        updatepass = findViewById(R.id.btnUpdatePass);
+        //eUsername = findViewById(R.id.etDisplayname);
+        updatebtn = (FloatingActionButton) findViewById(R.id.btnUpdate);
+        updatepass = (FloatingActionButton) findViewById(R.id.btnUpdatePass);
         //recordbtn = findViewById(R.id.btnRecordbtn);
         //etdisplay = findViewById(R.id.etDisplayname);
-        logout = findViewById(R.id.btnlogout);
+        logout = (FloatingActionButton) findViewById(R.id.btnlogout);
         eFullname = findViewById(R.id.etDisplayname1);
 
         validate(token);
@@ -162,12 +163,12 @@ public class UserProfile extends AppCompatActivity {
     private void update(JSONObject resp) {
         Log.d("JSONOUTUser", resp.toString());
         User user = new Gson().fromJson(resp.toString(), User.class);
-        eUsername.setText(user.userName);
+        //eUsername.setText(user.userName);
         eFullname.setText(user.firstName+" "+user.lastName);
         username = user.userName;
-        eFirstname.setText(user.firstName);
-        eLastname.setText(user.lastName);
-        eEmail.setText(user.email);
+        eFirstname.setText("First Name:    "+user.firstName);
+        eLastname.setText("Last Name:    "+user.lastName);
+        eEmail.setText("Email:    "+user.email);
         /* JSONObject jusername = null;
         try {
             jusername = resp.getJSONObject("username");

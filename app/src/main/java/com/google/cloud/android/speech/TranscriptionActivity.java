@@ -1,6 +1,7 @@
 package com.google.cloud.android.speech;
 
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -59,6 +61,10 @@ public class TranscriptionActivity extends AppCompatActivity {
     private static final String STATE_RESULTS = "results";
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 1;
+    private CardView transcriptionView;
+    FloatingActionButton startButton;
+    FloatingActionButton stopButton;
+    FloatingActionButton firstButton;
 
     private final StringBuilder transcription = new StringBuilder();
     private TextView textView = null;
@@ -135,6 +141,8 @@ public class TranscriptionActivity extends AppCompatActivity {
         textView = findViewById(R.id.tvTranscription);
         textView.setMovementMethod(new ScrollingMovementMethod());
 
+        transcriptionView = findViewById(R.id.transcriptionView);
+
         client = new OkHttpClient();
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
@@ -142,6 +150,10 @@ public class TranscriptionActivity extends AppCompatActivity {
         token = getIntent().getStringExtra("token");
 
         coordinatorLayout = findViewById(R.id.layout);
+
+
+        //firstButton = findViewById(R.id.btnStart);
+
     }
 
 
@@ -156,6 +168,7 @@ public class TranscriptionActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.action_language:
                 return true;
             case R.id.action_lesson:
@@ -179,10 +192,12 @@ public class TranscriptionActivity extends AppCompatActivity {
     }
 
     private void setButtonHandlers() {
-        Button startButton = findViewById(R.id.fabRecord);
-        Button stopButton = findViewById(R.id.fabStopRecord);
+        startButton = findViewById(R.id.fabRecord);
+        stopButton = findViewById(R.id.fabStopRecord);
+
         startButton.setOnClickListener(btnClick);
         stopButton.setOnClickListener(btnClick);
+
     }
 
     private void enableButton(int id, boolean isEnable) {

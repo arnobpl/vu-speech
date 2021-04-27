@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
+
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,73 +11,128 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
-
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="192dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:backgroundTint="#c9f1c0">
 
-        <android.support.design.widget.CollapsingToolbarLayout
+
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+            android:layout_height="192dp">
 
-            app:toolbarId="@+id/toolbar">
-
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"></android.support.v7.widget.Toolbar>
+                android:layout_height="match_parent"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+
+                app:toolbarId="@+id/toolbar">
+
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"></android.support.v7.widget.Toolbar>
+
+
+                <TextView
+                    android:id="@+id/tvWelcomeMain"
+                    android:layout_width="170dp"
+                    android:layout_height="78dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="60dp"
+                    android:layout_marginBottom="50dp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:text="Welcome,"
+                    android:textAlignment="textStart"
+                    android:textColor="#F8F5F5"
+                    android:textSize="30sp" />
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/transcriptionView"
+            android:layout_width="match_parent"
+            android:layout_height="392dp"
+            android:layout_margin="10dp"
+            android:backgroundTint="#c9f1c0"
+            android:elevation="15dp"
+            android:outlineAmbientShadowColor="@color/black"
+            android:padding="10dp"
+
+            app:cardCornerRadius="20dp">
+
 
             <TextView
-                android:id="@+id/tvWelcomeMain"
-                android:layout_width="170dp"
-                android:layout_height="78dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="60dp"
-                android:layout_marginBottom="50dp"
-                android:fontFamily="@font/open_sans_bold"
-                android:text="Welcome,"
-                android:textAlignment="textStart"
-                android:textColor="#F8F5F5"
-                android:textSize="30sp" />
-        </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
+                android:id="@+id/tvTranscription"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/raleway_semibold"
+                android:padding="10dp"
+                android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/fabRecord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="600dp"
-        android:layout_marginRight="100dp"
-        android:layout_marginBottom="50dp"
-        android:background="@drawable/button_inside"
-        android:text="Start Recording"
-        android:textColor="#FBFBFB" />
+        </android.support.v7.widget.CardView>
 
-    <TextView
-        android:id="@+id/tvTranscription"
-        android:layout_width="match_parent"
-        android:layout_height="392dp"
-        android:layout_marginTop="190dp"
-        android:fontFamily="@font/open_sans_semibold"
-        android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/fabStopRecord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="250dp"
-        android:layout_marginTop="600dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginBottom="50dp"
-        android:background="@drawable/button_inside"
-        android:text="Stop Recording"
-        android:textColor="#FAF6F6" />
 
-    "
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <android.support.design.widget.FloatingActionButton
+
+                android:id="@+id/fabRecord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="120dp"
+
+
+
+
+
+                android:backgroundTint="#00994D"
+                android:src="@drawable/ic_baseline_fiber_manual_record_24"
+                android:text="Start Recording"
+                android:textColor="#FBFBFB"
+                app:layout_anchorGravity="left"
+
+                />
+
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabStopRecord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+
+
+                android:layout_marginLeft="50dp"
+
+                android:backgroundTint="#00994D"
+                android:src="@drawable/ic_baseline_stop_24"
+                android:text="Stop Recording"
+                android:textColor="#FAF6F6"
+                app:layout_anchorGravity="right"
+                app:fabSize="auto"/>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
 
 </android.support.design.widget.CoordinatorLayout>
+
