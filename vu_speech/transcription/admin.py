@@ -15,7 +15,7 @@ class TranscriptionTokenAdmin(admin.ModelAdmin):
     list_display = ('token_value', 'last_used', 'is_active',)
     list_filter = ('last_used', 'is_active',)
 
-    readonly_fields = ('token_value', 'last_used',)
+    readonly_fields = ('last_used',)
 
     ordering = ('-last_used',)
 
