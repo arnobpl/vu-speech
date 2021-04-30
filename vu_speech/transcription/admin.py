@@ -10,6 +10,16 @@ from . import models
 # Register your models here.
 
 
+@admin.register(models.TranscriptionToken)
+class TranscriptionTokenAdmin(admin.ModelAdmin):
+    list_display = ('token_value', 'last_used', 'is_active',)
+    list_filter = ('last_used', 'is_active',)
+
+    readonly_fields = ('token_value', 'last_used',)
+
+    ordering = ('-last_used',)
+
+
 @admin.register(models.SpeechUsage)
 class SpeechUsageAdmin(BaseChartDataAdmin, NoWriteAdmin):
     # TODO: replace 'usage (sentences)' to 'duration' after getting seconds

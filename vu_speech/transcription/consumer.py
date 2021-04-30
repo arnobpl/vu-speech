@@ -1,17 +1,21 @@
 import asyncio
 import datetime
 import json
+import logging
 import time
 
+from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.db import transaction
+from django.utils import timezone
 from rev_ai.streamingclient import RevAiStreamingClient
 
 from . import models
-from .config import *
 from .utilities import *
+
+logger = logging.getLogger(__name__)
 
 
 class VuConsumer(AsyncWebsocketConsumer):
@@ -56,8 +60,15 @@ class VuConsumer(AsyncWebsocketConsumer):
             print(len(bytes_data))
 
         if self.scope['stream_client'] is None:
+            token_obj = await self.get_transcription_token()
+            if token_obj is None:
+                logger.warning('No active transcription token available. Request terminated.')
+                await self.close()
+                return
+
+            print('Token used: ' + token_obj.token_value)
             config = get_media_config('raw')
-            self.scope['stream_client'] = RevAiStreamingClient(ACCESS_KEY, config)
+            self.scope['stream_client'] = RevAiStreamingClient(token_obj.token_value, config)
             self.scope['stream_queue'] = [bytes_data]
         else:
             self.scope['stream_queue'].append(bytes_data)
@@ -128,8 +139,19 @@ class VuConsumer(AsyncWebsocketConsumer):
         value = event['value']
         await self.send(text_data=json.dumps({'type': 'text', 'value': value}))
 
+    @database_sync_to_async
+    def get_transcription_token(self):
+        token_objects = models.TranscriptionToken.objects.filter(is_active=True).order_by('last_used')
+        if token_objects.count() < 1:
+            return
+        token_obj = token_objects[:1].get()
+        token_obj.last_used = timezone.now()
+        token_obj.save()
+        return token_obj
+
 
 async def diagnostics_data_push(json_obj):
+    @database_sync_to_async
     def _data_push():
         time_start = json_obj['ts']
         time_end = json_obj['end_ts']
@@ -161,7 +183,7 @@ async def diagnostics_data_push(json_obj):
                 sp_stability.count += 1
                 sp_stability.save()
 
-    await asyncio.get_event_loop().run_in_executor(None, func=_data_push)
+    await _data_push()
 
 
 def has_private_data(data):

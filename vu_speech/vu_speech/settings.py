@@ -25,7 +25,10 @@ SECRET_KEY = '^_-vz9r)8j%%go24vmeq*=+iehzpdz$*v@92ujy4*e(ux*7!l9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'ec2-3-16-29-185.us-east-2.compute.amazonaws.com',
+    '127.0.0.1',
+]
 
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -147,7 +150,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 
@@ -159,9 +162,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'vu_speech/static',
-]
+STATIC_ROOT = 'static'
+
+# Customizing type of auto-created primary keys
+# https://docs.djangoproject.com/en/3.2/releases/3.2/#customizing-type-of-auto-created-primary-keys
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Logging
 # https://docs.djangoproject.com/en/3.1/topics/logging/
