@@ -70,7 +70,7 @@ public class TranscriptionActivity extends AppCompatActivity {
     private TextView textView = null;
 
     //private static final String WEBSOCKET_URL = "ws://10.0.2.2:8000/ws/transcriptData/";
-     private static final String WEBSOCKET_URL = "ws://stark.cse.buffalo.edu:8000/ws/transcriptData/";
+     private static final String WEBSOCKET_URL = "ws://ec2-3-16-29-185.us-east-2.compute.amazonaws.com:8000/ws/transcriptData/";
 
     private final class EchoWebSocketListener extends WebSocketListener {
         private static final int NORMAL_CLOSURE_STATUS = 1000;

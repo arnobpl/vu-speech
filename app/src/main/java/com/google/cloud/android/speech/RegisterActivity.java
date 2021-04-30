@@ -38,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     boolean isValid = false;
     private int counter = 5;
 
-    String url_auth = "http://stark.cse.buffalo.edu:8000/api/v1/accounts/signup/";
+    String url_auth = "http://ec2-3-16-29-185.us-east-2.compute.amazonaws.com:8000/api/v1/accounts/signup/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     String isValid = "";
     String auth = "";
     private int counter = 5;
-    String url_auth ="http://stark.cse.buffalo.edu:8000/api/v1/accounts/api-token-auth/";
+    String url_auth ="http://ec2-3-16-29-185.us-east-2.compute.amazonaws.com:8000/api/v1/accounts/api-token-auth/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

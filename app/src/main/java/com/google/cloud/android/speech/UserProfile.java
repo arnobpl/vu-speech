@@ -42,7 +42,7 @@ public class UserProfile extends AppCompatActivity {
     private TextView eFullname;
     String token = "";
     String username = "";
-    private String url_auth = "http://stark.cse.buffalo.edu:8000/api/v1/accounts/profile/retrieve/";
+    private String url_auth = "http://ec2-3-16-29-185.us-east-2.compute.amazonaws.com:8000/api/v1/accounts/profile/retrieve/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

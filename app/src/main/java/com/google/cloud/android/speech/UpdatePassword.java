@@ -35,7 +35,7 @@ public class UpdatePassword extends AppCompatActivity {
     String resp = "";
     String username = "";
 
-    String url_auth ="http://stark.cse.buffalo.edu:8000/api/v1/accounts/password/update/";
+    String url_auth ="http://ec2-3-16-29-185.us-east-2.compute.amazonaws.com:8000/api/v1/accounts/password/update/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
