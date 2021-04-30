@@ -1,6 +1,8 @@
 package com.google.cloud.android.speech;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +35,14 @@ public class LoginActivity extends AppCompatActivity {
     private String inputPassword = "";
     private String resp = "";
 
+    SharedPreferences sp;
+
+
+
+    public static final String filename = "login";
+    public static final String spusername = "username";
+    public static final  String sppassword = "password";
+
     String isValid = "";
     String auth = "";
     private int counter = 5;
@@ -49,12 +59,14 @@ public class LoginActivity extends AppCompatActivity {
 
         eRegister = findViewById(R.id.btnRegister);
 
+
+
         eLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String inputName = eName.getText().toString();
-                String inputPassword = ePassword.getText().toString();
+                String inputName = eName.getText().toString().trim();
+                String inputPassword = ePassword.getText().toString().trim();
 
                 validate(inputName, inputPassword);
                 //Log.d("JSONOUT", isValid.toString());
@@ -94,6 +106,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Log.d("JSONPost", response.toString());
+
+
                 resp = response.toString();
                 update(resp);
             }
@@ -136,6 +150,8 @@ public class LoginActivity extends AppCompatActivity {
         Log.d("JSONOUT", resp.toString());
 
         auth = resp.substring(10, (resp.length()-2));
+
+
 
         Log.d("token", auth.toString());
 

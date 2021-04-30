@@ -95,7 +95,7 @@ public class UserProfile extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(UserProfile.this, LoginActivity.class);
+                Intent intent = new Intent(UserProfile.this, WelcomeActivity.class);
                 //intent.putExtra("username", username );
                 startActivity(intent);
             }

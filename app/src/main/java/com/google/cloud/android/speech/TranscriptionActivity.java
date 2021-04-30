@@ -1,5 +1,7 @@
 package com.google.cloud.android.speech;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -54,6 +56,13 @@ public class TranscriptionActivity extends AppCompatActivity {
     private int bufferSize;
     String token = "";
 
+    public static final String filename = "login";
+    public static final String spusername = "username";
+    public static final  String sppassword = "password";
+
+
+    SharedPreferences sp;
+
     private CoordinatorLayout coordinatorLayout;
 
     private static final String FRAGMENT_MESSAGE_DIALOG = "message_dialog";
@@ -68,6 +77,7 @@ public class TranscriptionActivity extends AppCompatActivity {
 
     private final StringBuilder transcription = new StringBuilder();
     private TextView textView = null;
+    private TextView statusText = null;
 
     //private static final String WEBSOCKET_URL = "ws://10.0.2.2:8000/ws/transcriptData/";
      private static final String WEBSOCKET_URL = "ws://ec2-3-16-29-185.us-east-2.compute.amazonaws.com:8000/ws/transcriptData/";
@@ -119,6 +129,12 @@ public class TranscriptionActivity extends AppCompatActivity {
         setButtonHandlers();
         enableButtons(false);
 
+       /* sp = getSharedPreferences(filename, Context.MODE_PRIVATE);
+        if(sp.contains(spusername) && sp.contains(sppassword))
+        {
+
+        }  */
+
 
 
 
@@ -139,6 +155,8 @@ public class TranscriptionActivity extends AppCompatActivity {
         //enableButtons(false);
 
         textView = findViewById(R.id.tvTranscription);
+        statusText = findViewById(R.id.status);
+        statusText.setAlpha(0.0f);
         textView.setMovementMethod(new ScrollingMovementMethod());
 
         transcriptionView = findViewById(R.id.transcriptionView);
@@ -287,13 +305,14 @@ public class TranscriptionActivity extends AppCompatActivity {
         public void onClick(View v) {
             int id = v.getId();
             if (id == R.id.fabRecord) {
+                statusText.setAlpha(1.0f);
                 Snackbar snackbar = Snackbar.make(coordinatorLayout, "Recording Started", Snackbar.LENGTH_LONG);
                 snackbar.show();
                 textView.setText("");
                 enableButtons(true);
                 startRecording();
             } else if (id == R.id.fabStopRecord) {
-
+                statusText.setAlpha(0.0f);
                 Snackbar snackbar = Snackbar.make(coordinatorLayout, "Recording Stopped", Snackbar.LENGTH_LONG);
                 snackbar.show();
                 enableButtons(false);
