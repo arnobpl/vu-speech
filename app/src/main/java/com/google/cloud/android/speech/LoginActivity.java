@@ -60,6 +60,9 @@ public class LoginActivity extends AppCompatActivity {
         eRegister = findViewById(R.id.btnRegister);
 
 
+        //SessionManager sessionManager = new SessionManager(LoginActivity.this);
+
+
 
         eLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +73,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 validate(inputName, inputPassword);
                 //Log.d("JSONOUT", isValid.toString());
+
+
 
 
             }
@@ -157,6 +162,10 @@ public class LoginActivity extends AppCompatActivity {
 
         if(resp.startsWith("{\"token\":")) {
             Toast.makeText(LoginActivity.this, "Login successfull", Toast.LENGTH_SHORT).show();
+
+            SessionManager sessionManager = new SessionManager(LoginActivity.this);
+
+            sessionManager.createLoginSession(inputName, inputPassword, auth);
             Intent intent = new Intent(LoginActivity.this, TranscriptionActivity.class);
             intent.putExtra("token", auth );
             startActivity(intent);

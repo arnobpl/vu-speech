@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import java.io.FileNotFoundException;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -135,6 +136,15 @@ public class TranscriptionActivity extends AppCompatActivity {
 
         }  */
 
+
+
+        SessionManager sessionManager = new SessionManager(TranscriptionActivity.this);
+        HashMap<String, String> userDetails = sessionManager.getUserDetailsFromSession();
+
+        if (userDetails.get(SessionManager.IS_LOGGEDIN).equals("true") && userDetails.get(SessionManager.IS_LOGGEDIN) != null)
+        {
+            token = userDetails.get(SessionManager.KEY_TOKEN);
+        }
 
 
 

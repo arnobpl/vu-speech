@@ -26,6 +26,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.google.cloud.android.speech.SessionManager.IS_LOGGEDIN;
+
 public class UserProfile extends AppCompatActivity {
 
     private TextView eFirstname;
@@ -98,6 +100,12 @@ public class UserProfile extends AppCompatActivity {
                 Intent intent = new Intent(UserProfile.this, WelcomeActivity.class);
                 //intent.putExtra("username", username );
                 startActivity(intent);
+
+                SessionManager sessionManager = new SessionManager(UserProfile.this);
+                HashMap<String, String> userDetails = sessionManager.getUserDetailsFromSession();
+                sessionManager.logout();
+                sessionManager.editor.putBoolean(IS_LOGGEDIN, false);
+
             }
         });
 

@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
+
 public class WelcomeActivity extends AppCompatActivity {
 
     private TextView welcomeMessage;
@@ -17,32 +19,47 @@ public class WelcomeActivity extends AppCompatActivity {
     private TextView registerMessage;
     private Button welcomeLogin;
 
+    String token = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        welcomeMessage = findViewById(R.id.tvWelcome);
-        message1 = findViewById(R.id.tvMessage1);
-        message2 = findViewById(R.id.tvMessage2);
-        registerMessage = findViewById(R.id.tvRegisterWelcome);
-        welcomeLogin = findViewById(R.id.btnLoginWelocme);
+        SessionManager sessionManager = new SessionManager(WelcomeActivity.this);
+        HashMap<String, String> userDetails = sessionManager.getUserDetailsFromSession();
 
-        welcomeLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+        if (userDetails.get(SessionManager.IS_LOGGEDIN) != null && userDetails.get(SessionManager.IS_LOGGEDIN).equals("true")) {
+            Intent intent = new Intent(WelcomeActivity.this, TranscriptionActivity.class);
+            token = userDetails.get(SessionManager.KEY_TOKEN);
+            intent.putExtra("token", token);
+            startActivity(intent);
+        } else {
 
-        registerMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WelcomeActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
-        });
+            welcomeMessage = findViewById(R.id.tvWelcome);
+            message1 = findViewById(R.id.tvMessage1);
+            message2 = findViewById(R.id.tvMessage2);
+            registerMessage = findViewById(R.id.tvRegisterWelcome);
+            welcomeLogin = findViewById(R.id.btnLoginWelocme);
+
+            welcomeLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            registerMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(WelcomeActivity.this, RegisterActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
+
+
 }
